@@ -1,39 +1,127 @@
 import React from 'react';
+import './menuItem.less';
 import {Layout, Menu ,Icon} from 'antd';
 import { Link } from 'react-router-dom';
 const { Sider } = Layout;
+const SubMenu = Menu.SubMenu;
+
+const MenuList = [
+    {
+        id:1,
+        name:'流量分析',
+        path:'/admin/index'
+    },{
+        id:2,
+        name:'故事管理',
+        path:'/',
+        chlid:[
+            {
+                id:21,
+                name:'数据管理',
+                path:'/'
+            },{
+                id:22,
+                name:'流量分析',
+                path:'/'
+            }
+        ]
+    },{
+        id:3,
+        name:'话题管理',
+        path:'/',
+        chlid:[
+            {
+                id:31,
+                name:'数据管理',
+                path:'/'
+            },{
+                id:32,
+                name:'流量分析',
+                path:'/'
+            }
+        ]
+    },
+    {
+        id:4,
+        name:'广场管理',
+        path:'/',
+        chlid:[
+            {
+                id:41,
+                name:'数据管理',
+                path:'/'
+            },{
+                id:42,
+                name:'流量分析',
+                path:'/'
+            }
+        ]
+    },
+    {
+        id:5,
+        name:'用户管理',
+        path:'/',
+        chlid:[
+            {
+                id:51,
+                name:'数据管理',
+                path:'/'
+            },{
+                id:52,
+                name:'流量分析',
+                path:'/'
+            }
+        ]
+    }
+];
+
 
 class MenuItem extends React.Component {
     state = {
-        current: 'mail',
+        menuList:MenuList
     }
     render() {
+        const renderParent = (item) =>{
+            if(item.chlid){
+                return renderChlid(item);
+            }else{
+                return (
+                    <Menu.Item key={item.id}>
+                        <Link to={item.path}>
+                            <Icon type="user" />
+                            <span>{item.name}</span>
+                        </Link>
+                    </Menu.Item>
+                )
+            }
+        }
+        const renderChlid = (item) =>{
+            return (
+                <SubMenu key={item.id} title={<span><Icon type="mail" /><span>{item.name}</span></span>}>
+                    {
+                        item.chlid.map((item1)=>{
+                            return renderParent(item1)
+                        })
+                    }
+                </SubMenu>
+            )
+        }
+
+        const menuHtml = MenuList.map((item)=>{
+            return renderParent(item);
+        });
         return (
             <Sider
                 trigger={null}
                 collapsible
                 collapsed={this.state.collapsed}
+                className="ant-layout-sider-light"
             >
-                <div className="logo" />
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1">
-                        <Link to="/">
-                            <Icon type="user" />
-                            <span>流量分析</span>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="2">
-                        <Link to="/login">
-                            <Icon type="user" />
-                            <span>故事</span>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="3">
-                        <Link to="/index">
-                            <Icon type="user" />
-                            <span>话题</span>
-                        </Link>
-                    </Menu.Item>
+                <div className="logo-box">
+                    <div className="logo-text">故事汇总后台</div>
+                </div>
+                <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
+                    {menuHtml}
                 </Menu>
             </Sider>
         );
