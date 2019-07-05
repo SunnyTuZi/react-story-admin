@@ -6,8 +6,22 @@
 import React from 'react';
 import './index.less';
 import { Row, Col } from 'antd';
+import {getDataTotal} from "../../services/apiList";
 
 class FlowAnalysis extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {indexData: {}};
+    }
+    async getIndexData(){
+        let result = await getDataTotal();
+        if(result){
+            debugger;
+        }
+    }
+    componentDidMount(){
+        this.getIndexData();
+    }
     render() {
         return (
             <section className="continer-box">

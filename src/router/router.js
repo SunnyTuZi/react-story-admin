@@ -14,7 +14,7 @@ const BasicRoute = () => (
         <Switch>
             <Route exact path="/" component={App} />
             <Route path="/login" component={Login}/>
-            <Route path="/admin" component={App} />
+            <Route path="/" component={App} />
         </Switch>
     </Router>
 );

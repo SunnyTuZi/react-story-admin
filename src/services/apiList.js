@@ -44,13 +44,21 @@ export const checkToken = (data) => postAjax('api/admin/checkToken',data);
  * @param data
  * @returns {Promise<*>}
  */
-export const login = (data) => postAjax('api/admin/login',data);
+export const login = (data) => postAjax('./api/admin/login',data);
 
 /**
  * 获取验证码图片
  * @returns {Promise<T|*>}
  */
-export const getCode = () => getAjax('api/user/getCode',{});
+export const getCode = () => getAjax('./api/user/getCode',{});
+
+/**
+ * 获取总数据
+ * @returns {Promise<T|*>}
+ */
+export const getDataTotal = () => getAjax('api/admin/getDataTotal',{});
+
+
 
 
 

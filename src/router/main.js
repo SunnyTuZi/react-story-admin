@@ -9,7 +9,7 @@ import FlowAnalysis from '../pages/index/index';
 
 const MainRoute = () => (
     <Switch>
-        <Route path="/admin/index" component={FlowAnalysis} />
+        <Route path="/admin" component={FlowAnalysis} />
     </Switch>
 );
 
