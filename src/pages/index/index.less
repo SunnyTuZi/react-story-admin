@@ -1,3 +1,5 @@
+@import "~public/style/mixin";
+
 .continer-box{
   .chat-list{
     margin-bottom: 20px;
@@ -11,7 +13,7 @@
   .chat-box-2{
     .chart-box{
       display: flex;
-      height: 400px;
+      height: 500px;
     }
     .row-flex{
       display: flex;
@@ -19,7 +21,7 @@
       flex-direction: column;
       .row-flex-item{
         display: flex;
-        flex-grow: 1;
+        height: 240px;
 
       }
       .row-flex-item:first-child{
@@ -37,5 +39,8 @@
     background-color: #fff;
     flex-grow: 1;
     box-shadow: 1px 1px 1px #ddd;
+    display:flex;
+    justify-content: center;
+    align-items: center;
   }
 }

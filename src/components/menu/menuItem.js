@@ -112,6 +112,7 @@ class MenuItem extends React.Component {
         });
         return (
             <Sider
+                width="250px"
                 trigger={null}
                 collapsible
                 collapsed={this.state.collapsed}

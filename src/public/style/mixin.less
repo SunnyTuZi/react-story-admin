@@ -1,0 +1,60 @@
+@theme-color:#1890ff;
+
+.flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottom-shadow{
+  box-shadow: 1px 1px 1px #dddddd;
+}
+
+.border{
+  border: 1px solid #dddddd;
+}
+
+.border-bottom{
+  border-bottom: 1px solid #dddddd;
+}
+
+.img-raduis(@wdith, @color){
+  display: inline-block;
+  width: @wdith;
+  height: @wdith;
+  border-radius: 100%;
+  border: 1px solid @color;
+}
+
+.active{
+  color: @theme-color !important;
+}
+
+.com-btn(@fontColor,@bgColor){
+  display: inline-block;
+  width: 100px;
+  line-height: 38px;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 16px;
+  background:@bgColor;
+  color: @fontColor;
+}
+
+.msg-tips(@size){
+  width: @size;
+  height: @size;
+  font-size: 9px;
+  border-radius: 100%;
+  background: #ff2222;
+  color: #fff;
+  text-align: center;
+  line-height: @size;
+}
+
+.text-overflow{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
