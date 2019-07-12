@@ -9,7 +9,7 @@ const MenuList = [
     {
         id:1,
         name:'流量分析',
-        path:'/admin/index'
+        path:'/admin'
     },{
         id:2,
         name:'故事管理',
@@ -33,7 +33,7 @@ const MenuList = [
             {
                 id:31,
                 name:'数据管理',
-                path:'/'
+                path:'/topicList'
             },{
                 id:32,
                 name:'流量分析',

@@ -58,6 +58,20 @@ export const getCode = () => getAjax('./api/user/getCode',{});
  */
 export const getDataTotal = () => getAjax('api/admin/getDataTotal',{});
 
+/**
+ * 访问量统计
+ * @returns {Promise<T|*>}
+ */
+export const getVisitCount = () => getAjax('api/visit/getVisitCount',{});
+
+/**
+ * 话题列表
+ * @returns {Promise<T|*>}
+ */
+export const getTopicList = (data) => getAjax('/api/topic/getTopicList',data);
+
+
+
 
 
 

@@ -8,10 +8,8 @@ module.exports = function(app) {
     app.use(
         proxy("/api", {
             target: "http://192.168.123.42:3000",
-            changeOrigin: true,
-            pathRewrite: {
-                '^/api': '/api'
-            }
+            changeOrigin: true
+
         })
     );
 

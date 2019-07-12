@@ -33,7 +33,7 @@ class NormalLoginForm extends React.Component {
             this.props.setToken(result.token);
             setStore('adminInfo',result.data);
             setStore('token',result.token);
-            this.props.history.push('/');
+            this.props.history.push('/admin');
         }
     }
     async getCodeImg(){

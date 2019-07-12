@@ -4,68 +4,11 @@
  */
 import React from 'react';
 import './index.less';
-import { Row, Col,Table,Card } from 'antd';
-import {getDataTotal} from "../../services/apiList";
+import { Row, Col,Table } from 'antd';
+import {getDataTotal,getVisitCount} from "../../services/apiList";
 import TotalItem from '@components/total/item';
 import ReactChart from '@components/chart/echarts';
 
-var option1 = {
-    title: { text: '' },
-
-    tooltip: {},
-    xAxis: {
-        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-    },
-    yAxis: {},
-    series: [{
-        name: '销量',
-        type: 'bar',
-        data: [5, 20, 36, 10, 10, 20]
-    }]
-};
-
-var option2 = {
-    title:{text:'访问统计'},
-    angleAxis: {
-        type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        z: 10
-    },
-    grid:{
-        width:'60%'
-    },
-    radiusAxis: {
-    },
-    polar: {
-        radius:'60%'
-    },
-    series: [{
-        type: 'bar',
-        data: [1, 2, 3, 4, 3, 5, 1],
-        coordinateSystem: 'polar',
-        name: 'A',
-        stack: 'a'
-    }, {
-        type: 'bar',
-        data: [2, 4, 6, 1, 3, 2, 1],
-        coordinateSystem: 'polar',
-        name: 'B',
-        stack: 'a'
-    }, {
-        type: 'bar',
-        data: [1, 2, 3, 4, 1, 2, 5],
-        coordinateSystem: 'polar',
-        name: 'C',
-        stack: 'a'
-    }],
-    legend: {
-        show: true,
-        data: ['A', 'B', 'C'],
-        bottom: 10,
-        left:10,
-        orient:'vertical'
-    }
-};
 
 var option3 = {
     title: {
@@ -199,16 +142,15 @@ const data1 = [{
     head: '/images/1.jpg',
     fans:10,
 },{
-    key: '3',
+    key: '4',
     name: 'Joe Black',
     head: '/images/1.jpg',
     fans:10,
 }];
-
 class FlowAnalysis extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {indexData: {}};
+        this.state = {indexData: {},option2:{}};
     }
     async getIndexData(){
         let result = await getDataTotal();
@@ -218,8 +160,57 @@ class FlowAnalysis extends React.Component {
             });
         }
     }
+    async getVisitCount(){
+        let result = await getVisitCount();
+        if(result){
+            var dataObj = result.data;
+            var lengend = [],textArr=[],series = [],textArrStatus = false;
+            for(let key in dataObj){
+                let arr = [];
+                for(let key1 in dataObj[key]){
+                    arr.push(dataObj[key][key1]);
+                    if(!textArrStatus) textArr.push(key1);
+
+                }
+                textArrStatus = true;
+                series.push({
+                    type:'bar',
+                    data:arr,
+                    coordinateSystem:'polar',
+                    name:key,
+                    stack:'a'
+                });
+                lengend.push(key);
+            }
+            this.setState({option2:{
+                title:{text:'访问统计'},
+                angleAxis: {
+                    type: 'category',
+                    data: textArr,
+                    z: 10
+                },
+                grid:{
+                    width:'60%'
+                },
+                radiusAxis: {
+                },
+                polar: {
+                    radius:'60%'
+                },
+                series: series,
+                legend: {
+                    show: true,
+                    data: lengend,
+                    bottom: 10,
+                    left:10,
+                    orient:'vertical'
+                }
+            }});
+        }
+    }
     componentDidMount(){
         this.getIndexData();
+        this.getVisitCount();
     }
     render() {
         return (
@@ -259,7 +250,7 @@ class FlowAnalysis extends React.Component {
                             <Row className="row-flex">
                                 <Col span={24} className="row-flex-item">
                                     <div className="total-item">
-                                        <ReactChart options={option2}></ReactChart>
+                                        <ReactChart options={this.state.option2}></ReactChart>
                                     </div>
                                 </Col>
                                 <Col span={24} className="row-flex-item">
