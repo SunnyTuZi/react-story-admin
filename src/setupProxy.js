@@ -9,8 +9,11 @@ module.exports = function(app) {
         proxy("/api", {
             target: "http://192.168.123.42:3000",
             changeOrigin: true
-
-        })
+        }),
+        proxy("/images", {
+            target: "http://192.168.123.42:3000",
+            changeOrigin: true
+        }),
     );
 
 };

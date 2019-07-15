@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import './App.less';
+import './until/common';
 import MenuItem from './components/menu/menuItem';
 import HeaderItem from './components/header/headerItem';
 import MainRoute from './router/main';

@@ -1,86 +1,65 @@
 import React from 'react';
 import { connect } from "react-redux";
+import './list.less';
 import {getTopicList} from "../../services/apiList";
-import { Table } from 'antd';
+import { Table,Form, Input, Select, Button } from 'antd';
+const Search = Input.Search;
+const FormItem = Form.Item;
+const Option = Select.Option;
 
 const columns = [{
-    title: 'Name',
-    dataIndex: 'name',
-    filters: [{
-        text: 'Joe',
-        value: 'Joe',
-    }, {
-        text: 'Jim',
-        value: 'Jim',
-    }, {
-        text: 'Submenu',
-        value: 'Submenu',
-        children: [{
-            text: 'Green',
-            value: 'Green',
-        }, {
-            text: 'Black',
-            value: 'Black',
-        }],
-    }],
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
+    title: '话题封面',
+    dataIndex: 'topicImg',
+    width:100,
+    render: text => <img className="topic-img" src={'/images'+text} />
+},{
+    title: '话题名称',
+    width:100,
+    dataIndex: 'topicName',
 }, {
-    title: 'Age',
-    dataIndex: 'age',
-    sorter: (a, b) => a.age - b.age,
-}, {
-    title: 'Address',
-    dataIndex: 'address',
-    filters: [{
-        text: 'London',
-        value: 'London',
-    }, {
-        text: 'New York',
-        value: 'New York',
-    }],
-    filterMultiple: false,
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-    sorter: (a, b) => a.address.length - b.address.length,
-}];
-
-function onChange(pagination, filters, sorter) {
-    console.log('params', pagination, filters, sorter);
+    title: '话题简介',
+    width:200,
+    dataIndex: 'topicInfo',
+},
+{
+    title: '关注人数',
+    width:50,
+    dataIndex: 'size',
+    sorter: (a, b) => a.size - b.size,
+},
+{
+    title: '状态',
+    width:50,
+    dataIndex: 'status',
+    render: text => text ? '在线':'禁止'
+},
+{
+    title: '创建时间',
+    width:150,
+    dataIndex: 'createDate',
+    render: date => new Date(date).format('yyyy-MM-dd mm:hh:ss'),
+    sorter: (a, b) => new Date(a.createDate).getTime() - new Date(a.createDate).getTime(b.createDate)
 }
+];
 
-
-const data = [{
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-}, {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-}, {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-}, {
-    key: '4',
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-}];
+const rowSelection = {
+    onChange:(pagination, filters, sorter)=> {
+        console.log('params', pagination, filters, sorter);
+    }
+}
 
 class TopicList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {codeImg: ''};
+        this.state = {codeImg: '',topicList:[]};
     }
 
     async getTopicList(){
         let result = await getTopicList({});
         if(result){
-
+            this.setState({
+                topicList:result.data
+            });
         }
     }
 
@@ -89,7 +68,29 @@ class TopicList extends React.Component {
     }
     render() {
         return (
-            <Table columns={columns} dataSource={data} onChange={onChange} />
+            <div className="topic-table-box">
+                <Form layout="inline" onSubmit={this.handleSubmit} className="form-box">
+                    <FormItem label="话题名称">
+                        <Search
+                            placeholder="input search text"
+                            style={{ width: 200 }}
+                            onSearch={value => console.log(value)}
+                        />
+                    </FormItem>
+                    <FormItem label="是否禁用">
+                        <Select defaultValue="" style={{ width: 120 }} >
+                            <Option value=""></Option>
+                            <Option value="0">是</Option>
+                            <Option value="1">否</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" shape="搜索" icon="search" />
+                    </FormItem>
+                </Form>
+                <Table columns={columns} rowSelection={rowSelection} dataSource={this.state.topicList} bordered  />
+            </div>
+
         );
     }
 }
