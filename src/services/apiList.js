@@ -70,6 +70,14 @@ export const getVisitCount = () => getAjax('api/visit/getVisitCount',{});
  */
 export const getTopicList = (data) => getAjax('/api/topic/getTopicList',data);
 
+/**
+ * 首页折线列表
+ * @returns {Promise<T|*>}
+ */
+export const getLineData = (data) => getAjax('/api/admin/getLineData',data);
+
+
+
 
 
 

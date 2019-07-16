@@ -5,7 +5,7 @@
 import React from 'react';
 import './index.less';
 import { Row, Col,Table } from 'antd';
-import {getDataTotal,getVisitCount} from "../../services/apiList";
+import {getDataTotal,getVisitCount,getLineData} from "../../services/apiList";
 import TotalItem from '@components/total/item';
 import ReactChart from '@components/chart/echarts';
 
@@ -55,67 +55,6 @@ var option3 = {
     }]
 };
 
-var option4 = {
-    title: {
-        text: '站内统计'
-    },
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['新增用户','新增群组','发表次数','访问次数']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['周一','周二','周三','周四','周五','周六','周日']
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [
-        {
-            name:'新增用户',
-            type:'line',
-            smooth: true,
-            stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-            name:'新增群组',
-            type:'line',
-            smooth: true,
-            stack: '总量',
-            data:[220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-            name:'发表次数',
-            type:'line',
-            smooth: true,
-            stack: '总量',
-            data:[150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-            name:'访问次数',
-            type:'line',
-            smooth: true,
-            stack: '总量',
-            data:[320, 332, 301, 334, 390, 330, 320]
-        }
-    ]
-};
-
 const columns = [{
     title: 'Head',
     dataIndex: 'head',
@@ -150,7 +89,7 @@ const data1 = [{
 class FlowAnalysis extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {indexData: {},option2:{}};
+        this.state = {indexData: {},option2:{},option4:{}};
     }
     async getIndexData(){
         let result = await getDataTotal();
@@ -181,7 +120,8 @@ class FlowAnalysis extends React.Component {
                     stack:'a'
                 });
                 lengend.push(key);
-            }
+            };
+
             this.setState({option2:{
                 title:{text:'访问统计'},
                 angleAxis: {
@@ -208,10 +148,71 @@ class FlowAnalysis extends React.Component {
             }});
         }
     }
+
+    async getLineDate(){
+        let result = await getLineData();
+        if(result){
+            var legend = [],titleArr = [],series = [],status = false, filedObj = {story:'新增故事',group:'新增群组',visit:'新增访客',user:'新增用户'};
+            for(let key in result.data){
+                legend.push(filedObj[key]);
+                let arr = result.data[key];
+                let item = [];
+                for (let i = 0; i < arr.length; i ++) {
+                    if(!status) titleArr.push(arr[i]._id);
+                    item.push(arr[i].count);
+                }
+                let obj = {
+                    name:filedObj[key],
+                    type:'line',
+                    smooth: true,
+                    stack: '总量',
+                    data:item
+                }
+                series.push(obj);
+                status = true;
+            }
+            this.setState({
+                option4:{
+                    title: {
+                        text: '数据统计'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:legend
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: titleArr
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: series
+                }
+            });
+        }
+    }
+
     componentDidMount(){
         this.getIndexData();
         this.getVisitCount();
+        this.getLineDate();
     }
+
     render() {
         return (
             <section className="continer-box">
@@ -243,7 +244,7 @@ class FlowAnalysis extends React.Component {
                     <Row gutter={20}>
                         <Col span={18} className="chart-box">
                             <div className="total-item">
-                                <ReactChart options={option4}></ReactChart>
+                                <ReactChart options={this.state.option4}></ReactChart>
                             </div>
                         </Col>
                         <Col span={6} className="chart-box">

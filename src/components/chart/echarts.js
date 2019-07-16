@@ -1,5 +1,4 @@
 import React from 'react';
-
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 // 引入柱状图
@@ -21,16 +20,25 @@ import 'echarts/lib/component/legend';
 class ReactChart extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            chart:null
+        };
     }
     componentDidMount(){
-        var chart = '';
         setTimeout(()=>{
-            chart = echarts.init(this.refDom);
-            chart.setOption(this.props.options)
+            this.state.chart = echarts.init(this.refDom);
+            this.state.chart.setOption(this.props.options);
         },100);
         window.addEventListener('resize',()=>{
-           chart.resize();
+            this.state.chart.resize();
         });
+    }
+
+    componentDidUpdate(){
+        if(this.state.chart){
+            this.state.chart.setOption(this.props.options);
+        }
+
     }
     render() {
         return (
