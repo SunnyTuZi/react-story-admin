@@ -165,7 +165,6 @@ class FlowAnalysis extends React.Component {
                     name:filedObj[key],
                     type:'line',
                     smooth: true,
-                    stack: '总量',
                     data:item
                 }
                 series.push(obj);

@@ -8,9 +8,6 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import {Link,withRouter} from 'react-router-dom';
 const FormItem = Form.Item;
 
-
-
-
 class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props);

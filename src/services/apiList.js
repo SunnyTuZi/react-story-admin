@@ -76,6 +76,23 @@ export const getTopicList = (data) => getAjax('/api/topic/getTopicList',data);
  */
 export const getLineData = (data) => getAjax('/api/admin/getLineData',data);
 
+/**
+ * 上传图片
+ * @returns {Promise<T|*>}
+ */
+export const uploadHead = (data) => postAjax('/api/admin/upload',data);
+
+/**
+ * 添加话题
+ * @returns {Promise<T|*>}
+ */
+export const addTopic = (data) => postAjax('/api/topic/addTopic',data);
+
+/**
+ * 修改话题
+ * @returns {Promise<T|*>}
+ */
+export const updateTopic = (data) => postAjax('/api/admin/updateTopic',data);
 
 
 
