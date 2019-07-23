@@ -2,11 +2,12 @@ import React from 'react';
 import {connect} from "react-redux";
 import './list.less';
 import {addTopic, getTopicList, uploadHead,updateTopic} from "../../services/apiList";
-import {Avatar, Button, Form, Icon, Input, Modal, Select, Table, Upload} from 'antd';
+import {Avatar, Button, Form, Icon, Input, Modal, Select, Table, Upload,Radio } from 'antd';
 
 const {TextArea, Search} = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 
 
 const CollectionCreateForm = Form.create()(
@@ -73,13 +74,13 @@ const CollectionCreateForm = Form.create()(
                         <FormItem label="状态" labelCol={{style: {width: '100px', textAlign: 'right'}}}>
                             {getFieldDecorator('status', {
                                 rules: [ {required: true, message: '请选择状态！'} ],
-                                initialValue:formData.status.toString()
+                                initialValue:formData.status
                             })(
-                                <Select style={{width: 300}}>
-                                    <Option value=""></Option>
-                                    <Option value="0">禁用</Option>
-                                    <Option value="1">启用</Option>
-                                </Select>
+                                <RadioGroup>
+                                    <Radio value={0}>禁用</Radio>
+                                    <Radio value={1}>启用</Radio>
+
+                                </RadioGroup>
                             )}
                         </FormItem>
                     </div>
@@ -187,12 +188,15 @@ class TopicList extends React.Component {
     handleChange = async (info) => {
         let data = new FormData();
         data.append('file', info.file.originFileObj);
-        let result = await uploadHead(data);
-        if (result) {
-            this.setState({
-                formData: [{topicImg:result.imgUrl},...this.state.formData]
-            })
+        if(info.file.status === 'error'){
+            let result = await uploadHead(data);
+            if (result) {
+                this.setState({
+                    formData: Object.assign(this.state.formData,{topicImg:result.imgUrl})
+                })
+            }
         }
+
     }
 
     handleSubmit = () => {
@@ -211,8 +215,10 @@ class TopicList extends React.Component {
             }
             if (result) {
                 this.setState({
-                    visible: false
+                    visible: false,
+                    formData:{}
                 });
+                form.resetFields();
                 this.getTopicList();
             }
         });

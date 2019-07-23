@@ -3,8 +3,6 @@
  * @Description:
  */
 
-'use strict';
-
 /**
  *
  * @param p '时间格式：yyyy-MM-dd hh:mm:ss'

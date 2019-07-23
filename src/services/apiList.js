@@ -94,6 +94,26 @@ export const addTopic = (data) => postAjax('/api/topic/addTopic',data);
  */
 export const updateTopic = (data) => postAjax('/api/admin/updateTopic',data);
 
+/**
+ * 获取话题雷达
+ * @returns {Promise<T|*>}
+ */
+export const getTopicData = (data) => getAjax('/api/admin/getTopicData',data);
+
+/**
+ * 获取热门用户
+ * @returns {Promise<T|*>}
+ */
+export const getHotUser = (data) => getAjax('/api/admin/getHotUser',data);
+
+/**
+ * 获取热门用户
+ * @returns {Promise<T|*>}
+ */
+export const getHotTopic = (data) => getAjax('/api/admin/getHotTopic',data);
+
+
+
 
 
 

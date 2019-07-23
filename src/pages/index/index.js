@@ -4,92 +4,40 @@
  */
 import React from 'react';
 import './index.less';
-import { Row, Col,Table } from 'antd';
-import {getDataTotal,getVisitCount,getLineData} from "../../services/apiList";
+import { Row, Col,Table,Avatar  } from 'antd';
+import {getDataTotal,getVisitCount,getLineData,getTopicData,getHotUser,getHotTopic} from "../../services/apiList";
 import TotalItem from '@components/total/item';
 import ReactChart from '@components/chart/echarts';
 
 
-var option3 = {
-    title: {
-        text: '话题统计'
-    },
-    tooltip: {},
-    legend: {
-        data: ['关注人数', '发表次数'],
-        bottom: 10,
-        left:10,
-        orient:'vertical'
-    },
-    radar: {
-        name: {
-            textStyle: {
-                color: '#fff',
-                backgroundColor: '#999',
-                borderRadius: 3,
-                padding: [3, 5]
-            }
-        },
-        radius:'60%',
-        indicator: [
-            { name: '鬼故事', max: 6500},
-            { name: '情感', max: 16000},
-            { name: '纪实', max: 30000},
-            { name: '励志', max: 38000},
-            { name: '玄幻', max: 52000},
-            { name: '搞笑', max: 25000}
-        ]
-    },
-    series: [{
-        type: 'radar',
-        data : [
-            {
-                value : [4300, 10000, 28000, 35000, 50000, 19000],
-                name : '关注人数'
-            },
-            {
-                value : [5000, 14000, 28000, 31000, 42000, 21000],
-                name : '发表次数'
-            }
-        ]
-    }]
-};
-
-const columns = [{
-    title: 'Head',
+const userColumns = [{
+    title: '用户头像',
     dataIndex: 'head',
+    render: (src) => <Avatar  src={'images'+src} alt=""/>
 }, {
-    title: 'Name',
-    dataIndex: 'name',
+    title: '用户昵称',
+    dataIndex: 'username',
 }, {
     title: 'Fans',
     dataIndex: 'fans',
 }];
-const data1 = [{
-    key: '1',
-    head: '/images/1.jpg',
-    name: 'Green',
-    fans:10,
+
+const topicColumns = [{
+    title: '话题封面',
+    dataIndex: 'topicImg',
+    render: (src) => <Avatar  src={'images'+src} alt=""/>
 }, {
-    key: '2',
-    name: 'Jim Green',
-    head: '/images/1.jpg',
-    fans:10,
+    title: '话题名称',
+    dataIndex: 'topicName',
 }, {
-    key: '3',
-    name: 'Joe Black',
-    head: '/images/1.jpg',
-    fans:10,
-},{
-    key: '4',
-    name: 'Joe Black',
-    head: '/images/1.jpg',
-    fans:10,
+    title: '关注人数',
+    dataIndex: 'fans',
 }];
+
 class FlowAnalysis extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {indexData: {},option2:{},option4:{}};
+        this.state = {indexData: {},option2:{},option3:{},option4:{},hotUser:[],hotTopic:[]};
     }
     async getIndexData(){
         let result = await getDataTotal();
@@ -149,7 +97,7 @@ class FlowAnalysis extends React.Component {
         }
     }
 
-    async getLineDate(){
+    async getLineData(){
         let result = await getLineData();
         if(result){
             var legend = [],titleArr = [],series = [],status = false, filedObj = {story:'新增故事',group:'新增群组',visit:'新增访客',user:'新增用户'};
@@ -206,10 +154,84 @@ class FlowAnalysis extends React.Component {
         }
     }
 
+    async getTopicData(){
+        let result = await getTopicData();
+        if(result){
+            let legend = [],serieArr=[],indicatorArr = [],objKey = {storys:'发表次数',tfs:'关注人数'},dataObj = {};
+            let dataArr = result.data;
+            for (let i = 0; i <dataArr.length ; i ++) {
+                let item = dataArr[i];
+                indicatorArr.push({name:item.topicName,max:5});
+                for(let key in objKey){
+                    dataObj[objKey[key]] = dataObj[objKey[key]] || [];
+                    dataObj[objKey[key]].push(item[key]);
+                }
+            }
+            for(let key in dataObj){
+                legend.push(key);
+                serieArr.push({
+                   name:key,
+                   value: dataObj[key]
+                });
+            }
+            this.setState({
+                option3:{
+                    title: {
+                        text: '话题统计'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: legend,
+                        bottom: 10,
+                        left:10,
+                        orient:'vertical'
+                    },
+                    radar: {
+                        name: {
+                            textStyle: {
+                                color: '#fff',
+                                backgroundColor: '#999',
+                                borderRadius: 3,
+                                padding: [3, 5]
+                            }
+                        },
+                        radius:'60%',
+                        indicator: indicatorArr
+                    },
+                    series: [{
+                        type: 'radar',
+                        data : serieArr
+                    }]
+                }
+            })
+        }
+    }
+
+    async getHotUser(){
+        let result = await getHotUser();
+        if(result){
+            this.setState({
+                hotUser:result.data
+            })
+        }
+    }
+
+    async getHotTopic(){
+        let result = await getHotTopic();
+        if(result){
+            this.setState({
+                hotTopic:result.data
+            })
+        }
+    }
+
     componentDidMount(){
         this.getIndexData();
         this.getVisitCount();
-        this.getLineDate();
+        this.getLineData();
+        this.getTopicData();
+        this.getHotUser();
+        this.getHotTopic();
     }
 
     render() {
@@ -255,7 +277,7 @@ class FlowAnalysis extends React.Component {
                                 </Col>
                                 <Col span={24} className="row-flex-item">
                                     <div className="total-item">
-                                        <ReactChart options={option3}></ReactChart>
+                                        <ReactChart options={this.state.option3}></ReactChart>
                                     </div>
                                 </Col>
                             </Row>
@@ -266,12 +288,12 @@ class FlowAnalysis extends React.Component {
                     <Row gutter={20}>
                         <Col span={12} className="chart-box">
                             <div className="total-item">
-                                <Table pagination={false} style={{width:'100%',height:'100%',padding: '20px'}} columns={columns} dataSource={data1} size="middle" />
+                                <Table pagination={false} style={{width:'100%',height:'100%',padding: '20px'}} columns={userColumns} dataSource={this.state.hotUser} size="middle" />
                             </div>
                         </Col>
                         <Col span={12} className="chart-box">
                             <div className="total-item">
-                                <Table pagination={false} style={{width:'100%',height:'100%',padding: '20px'}} columns={columns} dataSource={data1} size="middle" />
+                                <Table pagination={false} style={{width:'100%',height:'100%',padding: '20px'}} columns={topicColumns} dataSource={this.state.hotTopic} size="middle" />
                             </div>
                         </Col>
                     </Row>
