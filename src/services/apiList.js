@@ -112,6 +112,18 @@ export const getHotUser = (data) => getAjax('/api/admin/getHotUser',data);
  */
 export const getHotTopic = (data) => getAjax('/api/admin/getHotTopic',data);
 
+/**
+ * 获取故事列表
+ * @returns {Promise<T|*>}
+ */
+export const getStoryList = (data) => getAjax('/api/admin/getStoryList',data);
+
+/**
+ * 修改故事状态
+ * @returns {Promise<T|*>}
+ */
+export const updateStoryStatus = (data) =>postAjax('/api/admin/updateStoryStatus',data);
+
 
 
 
