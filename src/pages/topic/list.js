@@ -2,9 +2,9 @@ import React from 'react';
 import {connect} from "react-redux";
 import './list.less';
 import {addTopic, getTopicList, uploadHead,updateTopic} from "../../services/apiList";
-import {Avatar, Button, Form, Icon, Input, Modal, Select, Table, Upload,Radio } from 'antd';
+import {Avatar, Button, Form, Icon, Input, Modal, Select, Table, Upload,Radio,Pagination } from 'antd';
 
-const {TextArea, Search} = Input;
+const {TextArea} = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -79,7 +79,6 @@ const CollectionCreateForm = Form.create()(
                                 <RadioGroup>
                                     <Radio value={0}>禁用</Radio>
                                     <Radio value={1}>启用</Radio>
-
                                 </RadioGroup>
                             )}
                         </FormItem>
@@ -99,6 +98,9 @@ class TopicList extends React.Component {
             visible: false,
             imageUrl: '',
             formStatus:0,
+            total:0,
+            page:1,
+            pageSize:5,
             formData: {
                 topicImg:'',
                 topicInfo:'',
@@ -106,11 +108,12 @@ class TopicList extends React.Component {
                 status:''
             },
         };
+        this.searchKey = {};
         this.columns = [ {
             title: '话题封面',
             dataIndex: 'topicImg',
             width: 100,
-            render: text => <img className="topic-img" src={'/images/' + text}/>
+            render: text => <img alt="" className="topic-img" src={'/images/' + text}/>
         }, {
             title: '话题名称',
             width: 100,
@@ -165,6 +168,9 @@ class TopicList extends React.Component {
                 formData: record,
                 formStatus:1
             });
+            if(!this.state.visible){
+                this.topicForm.resetFields();
+            }
         }
     }
 
@@ -174,15 +180,27 @@ class TopicList extends React.Component {
             formStatus:0,
             visible: ! this.state.visible
         });
+
     }
 
     getTopicList = async () => {
-        let result = await getTopicList({});
+        let result = await getTopicList({page:this.state.page,pageSize: this.state.pageSize,...this.searchKey});
         if (result) {
             this.setState({
-                topicList: result.data
+                topicList: result.data.list,
+                total:result.data.total
             });
         }
+    }
+
+    searchTopicList  = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                this.searchKey = values;
+                this.getTopicList();
+            }
+        });
     }
 
     handleChange = async (info) => {
@@ -224,30 +242,39 @@ class TopicList extends React.Component {
         });
     }
 
+
     componentDidMount() {
         this.getTopicList();
     }
 
     render() {
+        const { getFieldDecorator} = this.props.form;
         return (
             <div className="topic-table-box">
-                <Form layout="inline" ref={form => this.topicForm = form} className="form-box">
+                <Form layout="inline"  onSubmit={this.searchTopicList} className="form-box">
                     <FormItem label="话题名称">
-                        <Search
-                            placeholder="input search text"
-                            style={{width: 200}}
-                            onSearch={value => console.log(value)}
-                        />
+                        {getFieldDecorator('topicNameKey', {
+                        })(
+                            <Input
+                                placeholder="话题名称"
+                                style={{width: 200}}
+                            />
+                        )}
                     </FormItem>
                     <FormItem label="是否启用">
-                        <Select defaultValue="" style={{width: 120}}>
-                            <Option value=""></Option>
-                            <Option value="0">否</Option>
-                            <Option value="1">是</Option>
-                        </Select>
+                        {getFieldDecorator('topicStatus', {
+                            initialValue: ''
+                        })(
+                            <Select  style={{width: 120}}>
+                                <Option value="">全部</Option>
+                                <Option value="0">否</Option>
+                                <Option value="1">是</Option>
+                            </Select>
+                        )}
+
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" icon="search">搜索</Button>
+                        <Button type="primary" htmlType="submit" icon="search">搜索</Button>
                     </FormItem>
                     <FormItem>
                         <Button type="primary" onClick={this.showAddTopicBox}>
@@ -255,8 +282,9 @@ class TopicList extends React.Component {
                         </Button>
                     </FormItem>
                 </Form>
-                <Table columns={this.columns} rowSelection={this.rowSelection} dataSource={this.state.topicList}
+                <Table columns={this.columns}  pagination={false}  rowSelection={this.rowSelection} dataSource={this.state.topicList}
                        bordered/>
+                <Pagination className="pageContiner"  defaultCurrent={this.state.page} defaultPageSize={this.state.pageSize} total={this.state.total} onChange={this.pageChange} />
                 <CollectionCreateForm
                     ref={form => this.topicForm = form}
                     visible={this.state.visible}
@@ -270,5 +298,5 @@ class TopicList extends React.Component {
         );
     }
 }
-
-export default connect(null)(TopicList);
+const TopicListModel = Form.create()(TopicList);
+export default connect(null)(TopicListModel);

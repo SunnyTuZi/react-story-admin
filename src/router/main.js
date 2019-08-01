@@ -11,9 +11,9 @@ import StoryList from '../pages/story/list';
 
 const MainRoute = () => (
     <Switch>
-        <Route path="/admin" component={FlowAnalysis} />
-        <Route path="/topicList" component={TopicList} />
-        <Route path="/StoryList" component={StoryList} />
+        <Route path="/admin/index" component={FlowAnalysis} />
+        <Route path="/admin/topicList" component={TopicList} />
+        <Route path="/admin/storyList" component={StoryList} />
     </Switch>
 );
 

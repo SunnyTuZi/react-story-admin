@@ -9,7 +9,7 @@ const MenuList = [
     {
         id:1,
         name:'流量分析',
-        path:'/admin'
+        path:'/admin/index'
     },{
         id:2,
         name:'故事管理',
@@ -18,7 +18,7 @@ const MenuList = [
             {
                 id:21,
                 name:'数据管理',
-                path:'/storyList'
+                path:'/admin/storyList'
             },{
                 id:22,
                 name:'流量分析',
@@ -33,7 +33,7 @@ const MenuList = [
             {
                 id:31,
                 name:'数据管理',
-                path:'/topicList'
+                path:'/admin/topicList'
             },{
                 id:32,
                 name:'流量分析',
@@ -115,11 +115,13 @@ class MenuItem extends React.Component {
                 width="250px"
                 trigger={null}
                 collapsible
-                collapsed={this.state.collapsed}
+                collapsed={this.props.collapsed}
                 className="ant-layout-sider-light"
             >
-                <div className="logo-box">
-                    <div className="logo-text">故事汇总后台</div>
+
+                <div className="logo-box" >
+                    <div className="logo-text">
+                        {this.props.collapsed ? '':'故事汇总后台'}</div>
                 </div>
                 <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
                     {menuHtml}

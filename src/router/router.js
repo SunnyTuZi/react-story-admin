@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 /**
  * Create by Zwl on 2019/7/1
  * @Description:
@@ -14,7 +13,7 @@ const BasicRoute = () => (
         <Switch>
             <Route exact path="/" component={App} />
             <Route path="/login" component={Login}/>
-            <Route path="/" component={App} />
+            <Route path="/admin" component={App} />
         </Switch>
     </Router>
 );

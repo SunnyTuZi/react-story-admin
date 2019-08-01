@@ -4,25 +4,14 @@ import './list.less';
 import {getStoryList,updateStoryStatus} from "../../services/apiList";
 import {Avatar,Button, Form, Icon, Input, Select, Table,Pagination,Popconfirm  } from 'antd';
 
-const {Search} = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class TopicList extends React.Component {
+class storyList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            codeImg: '',
             storyList: [],
-            visible: false,
-            imageUrl: '',
-            formStatus: 0,
-            formData: {
-                topicImg: '',
-                topicInfo: '',
-                topicName: '',
-                status: ''
-            },
             total:0,
             page:1,
             pageSize:5
@@ -95,7 +84,7 @@ class TopicList extends React.Component {
                 }
             }
         ];
-
+        this.searchKey = {};
     }
 
     rowSelection = {
@@ -106,11 +95,11 @@ class TopicList extends React.Component {
 
     onUpdateStoryStatus = async (item) =>{
         let storyId = item._id;
-        let status = item.status == 0 ? 1 : 0;
+        let status = item.status === 0 ? 1 : 0;
         let result = await updateStoryStatus({_id:storyId,status:status});
         if(result){
             this.state.storyList.forEach((item1,index)=>{
-               if(item1._id == storyId){
+               if(item1._id === storyId){
                    item1.status = status;
                }
             });
@@ -121,13 +110,23 @@ class TopicList extends React.Component {
     }
 
     getStoryList = async () => {
-        let result = await getStoryList({page:this.state.page,pageSize: this.state.pageSize});
+        let result = await getStoryList({page:this.state.page,pageSize: this.state.pageSize,...this.searchKey});
         if (result) {
             this.setState({
                 storyList: result.data.list,
                 total:result.data.total
             });
         }
+    }
+
+    searchStoryList  = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                this.searchKey = values;
+                this.getStoryList();
+            }
+        });
     }
 
     pageChange = (page) =>{
@@ -141,25 +140,34 @@ class TopicList extends React.Component {
     }
 
     render() {
+        const { getFieldDecorator} = this.props.form;
         return (
             <div className="topic-table-box">
-                <Form layout="inline" ref={form => this.topicForm = form} className="form-box">
+                <Form layout="inline" onSubmit={this.searchStoryList} className="form-box">
                     <FormItem label="故事名称">
-                        <Search
-                            placeholder="故事名称"
-                            style={{width: 200}}
-                            onSearch={value => console.log(value)}
-                        />
+                        {getFieldDecorator('storyName', {
+                            rules: [{ message: '故事名称' }],
+                        })(
+                            <Input
+                                placeholder="故事名称"
+                                style={{width: 200}}
+                            />
+                        )}
+
                     </FormItem>
                     <FormItem label="是否违规">
-                        <Select defaultValue="" style={{width: 120}}>
-                            <Option value=""></Option>
-                            <Option value="0">否</Option>
-                            <Option value="1">是</Option>
-                        </Select>
+                        {getFieldDecorator('storyStatus', {
+                            initialValue: ''
+                        })(
+                            <Select style={{width: 120}}>
+                                <Option value="">全部</Option>
+                                <Option value="1">否</Option>
+                                <Option value="0">是</Option>
+                            </Select>
+                        )}
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" icon="search">搜索</Button>
+                        <Button type="primary" htmlType="submit" icon="search">搜索</Button>
                     </FormItem>
                 </Form>
                 <Table columns={this.columns} pagination={false}  rowSelection={this.rowSelection} dataSource={this.state.storyList}
@@ -170,5 +178,5 @@ class TopicList extends React.Component {
         );
     }
 }
-
-export default connect(null)(TopicList);
+const storyListModule = Form.create()(storyList);
+export default connect(null)(storyListModule);

@@ -20,19 +20,15 @@ function mapStateToProps(state) {
 };
 
 class HeaderItem extends React.Component {
-    state = {
-        collapsed: false,
-    }
-    componentDidMount(){
-    }
+
     render() {
         return (
-            <Header className="header-box">
+            <Header className="header-box" style={{left:this.props.collapsed ? '79px':'250px', transition:'200ms'}}>
                 <div className="menu-icon">
                     <Icon
                         className="trigger"
-                        type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                        onClick={this.toggle}
+                        type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
+                        onClick={this.props.toggle}
                         style={{marginLeft: '20px'}}
                     />
                 </div>

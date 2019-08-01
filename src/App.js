@@ -17,12 +17,24 @@ function mapStateToProps(state) {
 };
 
 class App extends React.Component {
-    async checkTokenStatu(){
+    constructor(props) {
+        super(props);
+        this.state = {
+            collapsed: false,
+        }
+    }
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    }
+
+    async checkTokenStatus(){
         var token = getStore('token');
         if(token){
             let result = await checkToken({token});
             if(result){
-                this.props.history.push('/admin');
+                this.props.history.push('/admin/index');
             }else{
                 this.props.history.push('/login');
             }
@@ -31,15 +43,15 @@ class App extends React.Component {
         }
     }
     componentDidMount(){
-        this.checkTokenStatu();
+        this.checkTokenStatus();
     }
     render() {
         return (
             <div className="App">
                 <Layout className="layout-box">
-                    <MenuItem className="slider"/>
+                    <MenuItem className="slider" collapsed={this.state.collapsed}/>
                     <Layout className="layout-content">
-                        <HeaderItem className="heaeder"/>
+                        <HeaderItem className="heaeder" toggle={this.toggle} collapsed={this.state.collapsed}/>
                         <Content className="content">
                             <MainRoute />
                         </Content>

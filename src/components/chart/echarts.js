@@ -20,23 +20,19 @@ import 'echarts/lib/component/legend';
 class ReactChart extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            chart:null
-        };
+        this.chart = null;
     }
-    componentDidMount(){
-        setTimeout(()=>{
-            this.state.chart = echarts.init(this.refDom);
-            this.state.chart.setOption(this.props.options);
-        },100);
+    componentWillUpdate(){
+        this.chart = echarts.init(this.refDom)
+        this.chart.setOption(this.props.options);
         window.addEventListener('resize',()=>{
-            this.state.chart.resize();
+            this.chart.resize();
         });
     }
 
     componentDidUpdate(){
-        if(this.state.chart){
-            this.state.chart.setOption(this.props.options);
+        if(this.chart){
+            this.chart.setOption(this.props.options);
         }
 
     }
