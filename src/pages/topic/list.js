@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from "react-redux";
 import './list.less';
-import {addTopic, getTopicList, uploadHead,updateTopic} from "../../services/apiList";
-import {Avatar, Button, Form, Icon, Input, Modal, Select, Table, Upload,Radio,Pagination } from 'antd';
+import {addTopic, getTopicList, updateTopic, uploadHead} from "../../services/apiList";
+import {Avatar, Button, Form, Icon, Input, Modal, Pagination, Radio, Select, Table, Upload} from 'antd';
 
 const {TextArea} = Input;
 const FormItem = Form.Item;
@@ -74,7 +74,7 @@ const CollectionCreateForm = Form.create()(
                         <FormItem label="状态" labelCol={{style: {width: '100px', textAlign: 'right'}}}>
                             {getFieldDecorator('status', {
                                 rules: [ {required: true, message: '请选择状态！'} ],
-                                initialValue:formData.status
+                                initialValue: formData.status
                             })(
                                 <RadioGroup>
                                     <Radio value={0}>禁用</Radio>
@@ -97,37 +97,38 @@ class TopicList extends React.Component {
             topicList: [],
             visible: false,
             imageUrl: '',
-            formStatus:0,
-            total:0,
-            page:1,
-            pageSize:5,
+            formStatus: 0,
+            total: 0,
+            page: 1,
+            pageSize: 5,
             formData: {
-                topicImg:'',
-                topicInfo:'',
-                topicName:'',
-                status:''
+                topicImg: '',
+                topicInfo: '',
+                topicName: '',
+                status: ''
             },
         };
         this.searchKey = {};
-        this.columns = [ {
-            title: '话题封面',
-            dataIndex: 'topicImg',
-            width: 100,
-            render: text => <img alt="" className="topic-img" src={'/images/' + text}/>
-        }, {
-            title: '话题名称',
-            width: 100,
-            dataIndex: 'topicName',
-        }, {
-            title: '话题简介',
-            width: 200,
-            dataIndex: 'topicInfo',
-        },
+        this.columns = [
+            {
+                title: '话题封面',
+                dataIndex: 'topicImg',
+                width: 100,
+                render: text => <img alt="" className="topic-img" src={'/images/' + text}/>
+            }, {
+                title: '话题名称',
+                width: 100,
+                dataIndex: 'topicName',
+            }, {
+                title: '话题简介',
+                width: 200,
+                dataIndex: 'topicInfo'
+            },
             {
                 title: '关注人数',
                 width: 50,
                 dataIndex: 'size',
-                sorter: (a, b) => a.size - b.size,
+                sorter: (a, b) => a.size - b.size
             },
             {
                 title: '状态',
@@ -146,8 +147,8 @@ class TopicList extends React.Component {
                 title: '操作',
                 width: 50,
                 dataIndex: '',
-                render: (text,record) => {
-                    return(
+                render: (text, record) => {
+                    return (
                         <Icon type="edit" onClick={this.editByTopic(record)}/>
                     )
                 }
@@ -161,14 +162,14 @@ class TopicList extends React.Component {
         }
     }
 
-    editByTopic = (record) =>{
-        return ()=>{
+    editByTopic = (record) => {
+        return () => {
             this.setState({
-                visible: !this.state.visible,
+                visible: ! this.state.visible,
                 formData: record,
-                formStatus:1
+                formStatus: 1
             });
-            if(!this.state.visible){
+            if (! this.state.visible) {
                 this.topicForm.resetFields();
             }
         }
@@ -177,26 +178,26 @@ class TopicList extends React.Component {
 
     showAddTopicBox = () => {
         this.setState({
-            formStatus:0,
+            formStatus: 0,
             visible: ! this.state.visible
         });
 
     }
 
     getTopicList = async () => {
-        let result = await getTopicList({page:this.state.page,pageSize: this.state.pageSize,...this.searchKey});
+        let result = await getTopicList({page: this.state.page, pageSize: this.state.pageSize, ...this.searchKey});
         if (result) {
             this.setState({
                 topicList: result.data.list,
-                total:result.data.total
+                total: result.data.total
             });
         }
     }
 
-    searchTopicList  = (e) => {
+    searchTopicList = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
+            if (! err) {
                 this.searchKey = values;
                 this.getTopicList();
             }
@@ -206,11 +207,11 @@ class TopicList extends React.Component {
     handleChange = async (info) => {
         let data = new FormData();
         data.append('file', info.file.originFileObj);
-        if(info.file.status === 'error'){
+        if (info.file.status === 'error') {
             let result = await uploadHead(data);
             if (result) {
                 this.setState({
-                    formData: Object.assign(this.state.formData,{topicImg:result.imgUrl})
+                    formData: Object.assign(this.state.formData, {topicImg: result.imgUrl})
                 })
             }
         }
@@ -225,16 +226,16 @@ class TopicList extends React.Component {
             }
 
             let result = '';
-            if(!this.state.formStatus){
-                result =  await addTopic(values);
-            }else{
+            if (! this.state.formStatus) {
+                result = await addTopic(values);
+            } else {
                 values._id = this.state.formData.key;
-                result =  await updateTopic(values);
+                result = await updateTopic(values);
             }
             if (result) {
                 this.setState({
                     visible: false,
-                    formData:{}
+                    formData: {}
                 });
                 form.resetFields();
                 this.getTopicList();
@@ -248,13 +249,12 @@ class TopicList extends React.Component {
     }
 
     render() {
-        const { getFieldDecorator} = this.props.form;
+        const {getFieldDecorator} = this.props.form;
         return (
             <div className="topic-table-box">
-                <Form layout="inline"  onSubmit={this.searchTopicList} className="form-box">
+                <Form layout="inline" onSubmit={this.searchTopicList} className="form-box">
                     <FormItem label="话题名称">
-                        {getFieldDecorator('topicNameKey', {
-                        })(
+                        {getFieldDecorator('topicNameKey', {})(
                             <Input
                                 placeholder="话题名称"
                                 style={{width: 200}}
@@ -265,7 +265,7 @@ class TopicList extends React.Component {
                         {getFieldDecorator('topicStatus', {
                             initialValue: ''
                         })(
-                            <Select  style={{width: 120}}>
+                            <Select style={{width: 120}}>
                                 <Option value="">全部</Option>
                                 <Option value="0">否</Option>
                                 <Option value="1">是</Option>
@@ -282,9 +282,11 @@ class TopicList extends React.Component {
                         </Button>
                     </FormItem>
                 </Form>
-                <Table columns={this.columns}  pagination={false}  rowSelection={this.rowSelection} dataSource={this.state.topicList}
+                <Table columns={this.columns} pagination={false} rowSelection={this.rowSelection}
+                       dataSource={this.state.topicList}
                        bordered/>
-                <Pagination className="pageContiner"  defaultCurrent={this.state.page} defaultPageSize={this.state.pageSize} total={this.state.total} onChange={this.pageChange} />
+                <Pagination className="pageContiner" defaultCurrent={this.state.page}
+                            defaultPageSize={this.state.pageSize} total={this.state.total} onChange={this.pageChange}/>
                 <CollectionCreateForm
                     ref={form => this.topicForm = form}
                     visible={this.state.visible}
@@ -298,5 +300,6 @@ class TopicList extends React.Component {
         );
     }
 }
+
 const TopicListModel = Form.create()(TopicList);
 export default connect(null)(TopicListModel);

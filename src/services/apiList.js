@@ -124,6 +124,12 @@ export const getStoryList = (data) => getAjax('/api/admin/getStoryList',data);
  */
 export const updateStoryStatus = (data) =>postAjax('/api/admin/updateStoryStatus',data);
 
+/**
+ * 获取用户列表
+ * @returns {Promise<T|*>}
+ */
+export const getUserList = (data) => getAjax('/api/admin/getUserList',data);
+
 
 
 

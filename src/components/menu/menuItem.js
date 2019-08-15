@@ -65,7 +65,7 @@ const MenuList = [
             {
                 id:51,
                 name:'数据管理',
-                path:'/'
+                path:'/admin/userList'
             },{
                 id:52,
                 name:'流量分析',
