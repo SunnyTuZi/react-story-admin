@@ -49,7 +49,7 @@ const MenuList = [
             {
                 id:41,
                 name:'数据管理',
-                path:'/'
+                path:'/admin/bubbleList'
             },{
                 id:42,
                 name:'流量分析',

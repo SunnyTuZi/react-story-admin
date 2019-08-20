@@ -13,7 +13,7 @@ import ReactChart from '@components/chart/echarts';
 const userColumns = [{
     title: '用户头像',
     dataIndex: 'head',
-    render: (src) => <Avatar  src={'images'+src} alt=""/>
+    render: (src) => <Avatar  src={'/images'+src} alt=""/>
 }, {
     title: '用户昵称',
     dataIndex: 'username',
@@ -25,7 +25,7 @@ const userColumns = [{
 const topicColumns = [{
     title: '话题封面',
     dataIndex: 'topicImg',
-    render: (src) => <Avatar  src={'images'+src} alt=""/>
+    render: (src) => <Avatar  src={'/images'+src} alt=""/>
 }, {
     title: '话题名称',
     dataIndex: 'topicName',

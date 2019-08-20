@@ -130,6 +130,20 @@ export const updateStoryStatus = (data) =>postAjax('/api/admin/updateStoryStatus
  */
 export const getUserList = (data) => getAjax('/api/admin/getUserList',data);
 
+/**
+ * 获取群组列表
+ * @returns {Promise<T|*>}
+ */
+export const getGroupList = (data) => getAjax('/api/admin/getGroupList',data);
+
+/**
+ * 修改群组状态
+ * @returns {Promise<T|*>}
+ */
+export const updateGroupStatus = (data) => getAjax('/api/admin/updateGroupStatus',data);
+
+
+
 
 
 
