@@ -22,7 +22,7 @@ const MenuList = [
             },{
                 id:22,
                 name:'流量分析',
-                path:'/'
+                path:'/admin/storyAnalysis'
             }
         ]
     },{

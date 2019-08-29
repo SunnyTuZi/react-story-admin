@@ -142,6 +142,12 @@ export const getGroupList = (data) => getAjax('/api/admin/getGroupList',data);
  */
 export const updateGroupStatus = (data) => getAjax('/api/admin/updateGroupStatus',data);
 
+/**
+ * 获取故事一年来的柱状图
+ * @returns {Promise<T|*>}
+ */
+export const getStoryBar = (data) => getAjax('/api/admin/getStoryBar',data);
+
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import './list.less';
+import './analysis.less';
 import {getStoryList,updateStoryStatus} from "../../services/apiList";
 import {Avatar,Button, Form, Icon, Input, Select, Table,Pagination,Popconfirm  } from 'antd';
 
