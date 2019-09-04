@@ -146,7 +146,21 @@ export const updateGroupStatus = (data) => getAjax('/api/admin/updateGroupStatus
  * 获取故事一年来的柱状图
  * @returns {Promise<T|*>}
  */
-export const getStoryBar = (data) => getAjax('/api/admin/getStoryBar',data);
+export const getStoryLine = (data) => getAjax('/api/admin/getStoryBar',data);
+
+/**
+ * 获取故事一年来的柱状图
+ * @returns {Promise<T|*>}
+ */
+export const getHotStoryToday = (data) => getAjax('/api/admin/getHotStoryToday',data);
+
+/**
+ * 获取前20个最多收藏的故事
+ * @returns {Promise<T|*>}
+ */
+export const getTopStory = (data) => getAjax('/api/admin/getTopStory',data);
+
+
 
 
 
