@@ -160,6 +160,23 @@ export const getHotStoryToday = (data) => getAjax('/api/admin/getHotStoryToday',
  */
 export const getTopStory = (data) => getAjax('/api/admin/getTopStory',data);
 
+/**
+ * 获取前五话题的故事发布量
+ * @returns {Promise<T|*>}
+ */
+export const getTop5TopiByStory = (data) => getAjax('/api/admin/getTop5TopiByStory',data);
+
+/**
+ * 获取一年内每个月的话题关注量
+ * @returns {Promise<T|*>}
+ */
+export const getTopicFollowData = (data) => getAjax('/api/admin/getTopicFollowData',data);
+
+
+
+
+
+
 
 
 

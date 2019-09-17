@@ -37,7 +37,7 @@ const MenuList = [
             },{
                 id:32,
                 name:'流量分析',
-                path:'/'
+                path:'/admin/topicAnalysis'
             }
         ]
     },

@@ -11,6 +11,7 @@ import StoryList from '../pages/story/list';
 import UserList from '../pages/user/list';
 import BubbleList from '../pages/bubble/list';
 import StoryAnalysis from '../pages/story/analysis';
+import TopicAnalysis from '../pages/topic/analysis';
 
 const MainRoute = () => (
     <Switch>
@@ -20,6 +21,8 @@ const MainRoute = () => (
         <Route path="/admin/userList" component={UserList} />
         <Route path="/admin/bubbleList" component={BubbleList} />
         <Route path="/admin/storyAnalysis" component={StoryAnalysis} />
+        <Route path="/admin/topicAnalysis" component={TopicAnalysis} />
+
     </Switch>
 );
 

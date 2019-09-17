@@ -217,7 +217,7 @@ class FlowAnalysis extends React.Component {
     }
 
     async getHotTopic(){
-        let result = await getHotTopic();
+        let result = await getHotTopic({pageSize:5});
         if(result){
             this.setState({
                 hotTopic:result.data
