@@ -78,17 +78,17 @@ npm run start
 
 ### 总流量分析页
 
-<img src="https://github.com/SunnyTuZi/vue2-story/blob/master/showImages/index.jpg" width="100%"/>
+<img src="https://github.com/SunnyTuZi/react-story-admin/blob/master/showImages/index.jpg" width="100%"/>
 
 ### 故事管理
 
-<img src="https://github.com/SunnyTuZi/vue2-story/blob/master/showImages/storyList.jpg" width="100"/>
-<img src="https://github.com/SunnyTuZi/vue2-story/blob/master/showImages/storyChart.jpg" width="100"/>
+<img src="https://github.com/SunnyTuZi/react-story-admin/blob/master/showImages/storyList.jpg" width="100%"/>
+<img src="https://github.com/SunnyTuZi/react-story-admin/blob/master/showImages/storyChart.jpg" width="100%"/>
 
 ### 话题管理
 
-<img src="https://github.com/SunnyTuZi/vue2-story/blob/master/showImages/topicList.jpg" width="100"/>
-<img src="https://github.com/SunnyTuZi/vue2-story/blob/master/showImages/topicChart.jpg" width="100"/>
+<img src="https://github.com/SunnyTuZi/react-story-admin/blob/master/showImages/topicList.jpg" width="100%"/>
+<img src="https://github.com/SunnyTuZi/react-story-admin/blob/master/showImages/topicChart.jpg" width="100%"/>
 
 
 # 项目布局
